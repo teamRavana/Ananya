@@ -1,4 +1,4 @@
-package ananya.utils;
+package ananya.utils.corpus.extractor;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.util.AXIOMUtil;
