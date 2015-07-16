@@ -64,7 +64,6 @@ public class AnnotationService {
 		String currentIteration;
 		String tag;
 		String [] arrayOfTexts = new String[1];
-		List<int[]> charOffset = null;
 		int entityCount = 0;
 		
 		ListIterator<String> listIterator = tokenizedWords.listIterator();
