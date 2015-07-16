@@ -13,6 +13,10 @@
         <module>org.uom.raavana.ananya.utils</module>
     </modules>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.apache.ws.commons.axiom</groupId>
