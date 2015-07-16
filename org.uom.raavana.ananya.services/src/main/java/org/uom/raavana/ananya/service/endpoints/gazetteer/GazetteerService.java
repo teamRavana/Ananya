@@ -19,31 +19,23 @@ public class GazetteerService {
     @Path("/")
     @Consumes("text/plain")
     @Produces("application/json")
-    public Response annotate(@Context HttpServletRequest httpServletRequest, @Multipart(value="text/plain") String text){
+    public Response annotate
+            (@Context HttpServletRequest httpServletRequest, @Multipart(value="text/plain") String text){
 
-       // create the request for service
+        String gazetteerPath = "";
+        String response;
 
-        String response = "    {\n" +
-                "        \"T1\": {\n" +
-                "            \"type\": \"Person\",\n" +
-                "           \"offsets\": [[53, 64]],\n" +
-                "           \"texts\": [\"දුලාජ් චාමර\"]\n" +
-                "       },\n" +
-                "        \"T2\": {\n" +
-                "            \"type\": \"Person\",\n" +
-                "           \"offsets\": [[78 , 91]],\n" +
-                "           \"texts\": [\"අවිශ්ක සුලෝචන\"]\n" +
-                "       },\n" +
-                "        \"T102\": {\n" +
-                "               \"type\": \"Person\",\n" +
-                "               \"offsets\": [[479 , 492]],\n" +
-                "               \"texts\": [\"ටී.බී. ඒකනායක\"]\n" +
-                "       }\n" +
-                "    } ";
+        try {
+            AnnotationService service = new AnnotationService(gazetteerPath);
+            response = service.tagNamedEntities(text);
 
-        // get the response
+            return Response.status(HttpServletResponse.SC_OK).
+                    entity(response).encoding("UTF-8").build();
+        }catch (Exception ex){
 
-        return Response.status(HttpServletResponse.SC_OK).
-                entity(response).encoding("UTF-8").build();
+            return Response.serverError().build();
+
+        }
+
     }
 }

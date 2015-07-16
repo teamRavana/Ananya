@@ -5,19 +5,26 @@ import java.util.*;
 import ananya.utils.gazetteer.Gazetteer;
 import com.google.gson.Gson;
 
+import com.google.gson.GsonBuilder;
 import corpus.sinhala.SinhalaTokenizer;
 import corpus.sinhala.SinhalaVowelLetterFixer;
-import org.uom.raavana.ananya.service.endpoints.gazetteer.EntityObject;
 
 
 public class AnnotationService {
 	
-	private static String fixedText;
-	private static HashMap<String, String> Gazzatters = new HashMap<String, String>();
-	private static Map<String, EntityObject> entityObjectMap = new HashMap<String, EntityObject>();
+	private String fixedText;
+	private Gazetteer gazetteer;
+	private Map<String, EntityObject> entityObjectMap;
 
-	public static ArrayList<int[]> getCharacterOffsetArray(String checkText){
 
+	public AnnotationService(String gazetteerPath){
+
+		gazetteer = Gazetteer.getInstance(gazetteerPath);
+		entityObjectMap = new HashMap<>();
+
+	}
+
+	private ArrayList<int[]> getCharacterOffsetArray(String checkText){
 		int Stringlength = checkText.length();
 
 		ArrayList<int[]> offsetList = new ArrayList<int[]>();
@@ -34,7 +41,7 @@ public class AnnotationService {
 		return offsetList;
 	}
 	
-	public static LinkedList<String> tokenizeText(){
+	private LinkedList<String> tokenizeText(){
 		
 		SinhalaTokenizer tokenizer = new SinhalaTokenizer();
 	    LinkedList<String> tokenizedwords = tokenizer.splitWords(fixedText);
@@ -42,70 +49,69 @@ public class AnnotationService {
 	    return tokenizedwords;		
 			
 	}
-	
-	public static void cleanText(String originText){
-		
+
+	/**
+	 *
+	 * @param originText
+	 */
+	private void cleanText(String originText){
 		SinhalaVowelLetterFixer vowelFixer = new SinhalaVowelLetterFixer();
 	    fixedText = vowelFixer.fixText(originText, false);
-			
 	}
 	
 	public String getFixedText(){
 		return fixedText;
 	}
-	
-	public static void generateEtities(){
 
-//		Gazetteer gazetteer = Gazetteer.getInstance("");
-
-
+	private void generateEntities() {
 		LinkedList<String> tokenizedWords = tokenizeText();
-		ArrayList<int[]> characterOffsetArray = new ArrayList<int[]>();
-		String currentIteration;
-		String tag;
-		String [] arrayOfTexts;
-		int entityCount = 0;
-		
-		ListIterator<String> listIterator = tokenizedWords.listIterator();
-        while (listIterator.hasNext()) {
-        	currentIteration = listIterator.next();
-        	if(Gazzatters.containsKey(currentIteration)){            	
-        		        		
-        		characterOffsetArray = getCharacterOffsetArray(currentIteration);
+		ArrayList<int[]> characterOffsetArray;
 
-//				tag= gazetteer.findNamedEntityTag("අතපත්තු");
-//				EntityObject entity = new EntityObject(tag, currentIteration, charOffset);
-				arrayOfTexts = new String[1];
-				arrayOfTexts[0] = currentIteration;
-        		EntityObject entity = new EntityObject(Gazzatters.get(currentIteration), arrayOfTexts, characterOffsetArray);
-        		entityObjectMap.put("T"+Integer.toString(entityCount), entity);
-        		entityCount++;
-        	}
-        	
-        }
-        
+		String currentToken;
+		String[] arrayOfTexts;
+		int entityCount = 1;
+
+		ListIterator<String> tokenWordsIter = tokenizedWords.listIterator();
+		while (tokenWordsIter.hasNext()) {
+			currentToken = tokenWordsIter.next();
+			//  get the offsets of text occurrences
+			characterOffsetArray = getCharacterOffsetArray(currentToken);
+			arrayOfTexts = new String[]{currentToken};
+			EntityObject entity = new EntityObject(gazetteer.findNamedEntityTag(currentToken), arrayOfTexts, characterOffsetArray);
+			entityObjectMap.put("T" + Integer.toString(entityCount), entity);
+			entityCount++;
+		}
+
 	}
 	
-	public static String generateJSON(){
+	private String generateJSON(){
 		
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();;
 		String jsonOutput = gson.toJson(entityObjectMap);
 		
 		return jsonOutput;
 				
 	}
-	
+
+
+	public String tagNamedEntities(String text){
+
+		// clean and set fixed text
+		cleanText(text);
+		// generate the NE tags
+		generateEntities();
+		// convert to json and return
+		return generateJSON();
+	}
+
 	public static void main(String args []){
-		Gazzatters.put("මාතර", "Location");
-		Gazzatters.put("විදුලි", "Location");
-		Gazzatters.put("මාර්ගයට", "Location");
-		Gazzatters.put("විමර්ශන", "Person");
-		
-		
-		cleanText("මාතර දෙස සිට අධිකවේගයෙන් පැමිණ ඇති ලොරියේ තිබූ විදුලි කණු හදිසියේම මහා මාර්ගයට ඇද වැටීම නිසා රියදුරුට ලොරිය පාලනය කර ගැනීමට නොහැකි වීමෙන් මෙම අනතුර සිදුවී ඇතැයි මූලික විමර්ශන වලින් හෙළිව තිබෙනවා");
-		generateEtities();
-		System.out.println(generateJSON());
-		System.out.println("Size: "+entityObjectMap.size());
+
+		AnnotationService service = new AnnotationService("/home/farazath/Ananya/input/gazetteer");
+
+		String response =
+				service.tagNamedEntities("මාතර දෙස සිට අධිකවේගයෙන් පැමිණ ඇති ලොරියේ තිබූ විදුලි කණු හදිසියේම මහා මාර්ගයට ඇද වැටීම නිසා රියදුරුට ලොරිය පාලනය කර ගැනීමට නොහැකි වීමෙන් මෙම අනතුර සිදුවී ඇතැයි මූලික විමර්ශන වලින් හෙළිව තිබෙනවා");
+
+		System.out.println(response);
 	
 	}
 	
