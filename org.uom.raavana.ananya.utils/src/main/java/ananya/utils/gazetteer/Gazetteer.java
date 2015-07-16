@@ -167,7 +167,10 @@ public class Gazetteer {
      */
     public static void main(String[] args) {
 
-        Gazetteer gazetteer = Gazetteer.getInstance("");
+        // path to the root folder where the gazetteers are present just like input/gazetteer
+        String path = "";
+
+        Gazetteer gazetteer = Gazetteer.getInstance(path);
         String tag = gazetteer.findNamedEntityTag("අතපත්තු");
         System.out.println("Tag for අතපත්තු : "+tag);
 
