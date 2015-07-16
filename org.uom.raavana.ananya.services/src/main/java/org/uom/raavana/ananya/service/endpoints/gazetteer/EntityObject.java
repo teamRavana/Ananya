@@ -6,11 +6,11 @@ public class EntityObject {
 	
 	String type;
 	ArrayList<int[]> offsets;
-	String [] text;
+	String [] texts;
 	
 	public EntityObject(String type, String [] text, ArrayList<int[]> offsets) {
 		this.type=type;
-		this.text=text;
+		this.texts =text;
 		this.offsets=offsets;
 	}
 

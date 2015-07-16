@@ -20,7 +20,7 @@ public class GazetteerService {
     @Consumes("text/plain")
     @Produces("application/json")
     public Response annotate
-            (@Context HttpServletRequest httpServletRequest, @Multipart(value="text/plain") String text){
+            (@Context HttpServletRequest httpServletRequest, @Multipart(value="texts/plain") String text){
 
         String gazetteerPath = "input/gazetteer";
         String response;

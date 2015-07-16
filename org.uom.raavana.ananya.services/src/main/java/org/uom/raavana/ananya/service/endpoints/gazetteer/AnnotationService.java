@@ -41,13 +41,10 @@ public class AnnotationService {
 		return offsetList;
 	}
 	
-	private LinkedList<String> tokenizeText(){
+	private List<String> tokenizeText(){
 		
 		SinhalaTokenizer tokenizer = new SinhalaTokenizer();
-	    LinkedList<String> tokenizedwords = tokenizer.splitWords(fixedText);
-	    
-	    return tokenizedwords;		
-			
+	    return tokenizer.splitWords(fixedText);
 	}
 
 	/**
@@ -64,25 +61,30 @@ public class AnnotationService {
 	}
 
 	private void generateEntities() {
-		LinkedList<String> tokenizedWords = tokenizeText();
+
+		List<String> tokenizedWords = tokenizeText();
+		// get unique words from the list of tokenized words
+		Set<String> uniqueWordsSet = new HashSet<>(tokenizedWords);
 		ArrayList<int[]> characterOffsetArray;
 
 		String currentToken;
 		String[] arrayOfTexts;
-		int entityCount = 1;
+		int entityCount = 0;
+		int countOffSets = 0;
 
-		ListIterator<String> tokenWordsIter = tokenizedWords.listIterator();
-		while (tokenWordsIter.hasNext()) {
-			currentToken = tokenWordsIter.next();
-			//  get the offsets of text occurrences
+		Iterator<String> uniqStringIterator = uniqueWordsSet.iterator();
+		while (uniqStringIterator.hasNext()) {
+			currentToken = uniqStringIterator.next();
+			//  get the offsets of texts occurrences
 			characterOffsetArray = getCharacterOffsetArray(currentToken);
+			countOffSets += characterOffsetArray.size();
 			arrayOfTexts = new String[]{currentToken};
 			EntityObject entity = new EntityObject(gazetteer.findNamedEntityTag(currentToken), arrayOfTexts, characterOffsetArray);
 			entityObjectMap.put("T" + Integer.toString(entityCount), entity);
 			entityCount++;
 		}
-
 	}
+
 	
 	private String generateJSON(){
 		
@@ -96,7 +98,7 @@ public class AnnotationService {
 
 	public String tagNamedEntities(String text){
 
-		// clean and set fixed text
+		// clean and set fixed texts
 		cleanText(text);
 		// generate the NE tags
 		generateEntities();
@@ -109,7 +111,7 @@ public class AnnotationService {
 		AnnotationService service = new AnnotationService("/home/farazath/Ananya/input/gazetteer");
 
 		String response =
-				service.tagNamedEntities("මාතර දෙස සිට අධිකවේගයෙන් පැමිණ ඇති ලොරියේ තිබූ විදුලි කණු හදිසියේම මහා මාර්ගයට ඇද වැටීම නිසා රියදුරුට ලොරිය පාලනය කර ගැනීමට නොහැකි වීමෙන් මෙම අනතුර සිදුවී ඇතැයි මූලික විමර්ශන වලින් හෙළිව තිබෙනවා");
+				service.tagNamedEntities("මාතර දෙස සිට මාතර දෙස සිට");
 
 		System.out.println(response);
 	
