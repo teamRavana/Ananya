@@ -22,7 +22,7 @@ public class GazetteerService {
     public Response annotate
             (@Context HttpServletRequest httpServletRequest, @Multipart(value="text/plain") String text){
 
-        String gazetteerPath = "";
+        String gazetteerPath = "input/gazetteer";
         String response;
 
         try {
