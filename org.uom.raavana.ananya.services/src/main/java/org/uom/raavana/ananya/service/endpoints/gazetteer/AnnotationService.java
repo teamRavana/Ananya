@@ -63,7 +63,7 @@ public class AnnotationService {
 		ArrayList<int[]> characterOffsetArray = new ArrayList<int[]>();
 		String currentIteration;
 		String tag;
-		String [] arrayOfTexts = new String[1];
+		String [] arrayOfTexts;
 		int entityCount = 0;
 		
 		ListIterator<String> listIterator = tokenizedWords.listIterator();
@@ -75,7 +75,7 @@ public class AnnotationService {
 
 //				tag= gazetteer.findNamedEntityTag("අතපත්තු");
 //				EntityObject entity = new EntityObject(tag, currentIteration, charOffset);
-
+				arrayOfTexts = new String[1];
 				arrayOfTexts[0] = currentIteration;
         		EntityObject entity = new EntityObject(Gazzatters.get(currentIteration), arrayOfTexts, characterOffsetArray);
         		entityObjectMap.put("T"+Integer.toString(entityCount), entity);
