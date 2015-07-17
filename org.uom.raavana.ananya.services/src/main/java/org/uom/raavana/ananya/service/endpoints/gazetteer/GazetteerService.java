@@ -23,6 +23,7 @@ public class GazetteerService {
             (@Context HttpServletRequest httpServletRequest, @Multipart(value="texts/plain") String text){
 
         String gazetteerPath = "input/gazetteer";
+
         String response;
 
         try {

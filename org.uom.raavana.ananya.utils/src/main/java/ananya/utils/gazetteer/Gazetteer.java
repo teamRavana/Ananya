@@ -47,11 +47,10 @@ public class Gazetteer {
             synchronized (Gazetteer.class) {
                 if (instance == null) {
                     instance = new Gazetteer();
-                    instance.init(rootDirPath);
                 }
             }
         }
-
+        instance.init(rootDirPath);
         return instance;
     }
 
