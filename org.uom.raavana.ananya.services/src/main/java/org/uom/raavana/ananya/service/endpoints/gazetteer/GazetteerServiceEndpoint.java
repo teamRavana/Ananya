@@ -13,6 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.servlet.ServletConfig;
+import java.io.File;
 
 @Path(value = "/gazetteer")
 public class GazetteerServiceEndpoint {
@@ -32,7 +33,7 @@ public class GazetteerServiceEndpoint {
         if (gazetteerPath == null || StringUtils.isEmpty(gazetteerPath)){
             System.err.println("Environment Varible " + GAZETTEER_ROOT + " not set");
 
-            gazetteerPath = System.getProperty("user.home")+DEFAULT_APP_ROOT;
+            gazetteerPath = System.getProperty("user.home")+ File.separator+DEFAULT_APP_ROOT;
             System.err.println("Setting default gazetteer input directory : "+DEFAULT_APP_ROOT);
         }
 

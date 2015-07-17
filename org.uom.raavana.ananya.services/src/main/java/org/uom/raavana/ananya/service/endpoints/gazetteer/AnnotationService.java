@@ -53,7 +53,7 @@ public class AnnotationService {
 
 		}
 
-		System.out.println(checkText+"------------->"+count);
+	//	System.out.println(checkText+"------------->"+count);
 		return offsetList;
 	}
 
@@ -120,18 +120,19 @@ public class AnnotationService {
 
 			// tag for the text
 			String tag = gazetteer.findNamedEntityTag(currentToken);
-			// text for tag
-			arrayOfTexts = new String[]{currentToken};
 
-			for (int[] offest : offSetList){
-				List<int[]> offSetListForTag = new ArrayList<>();
-				offSetListForTag.add(offest);
-				TagEntry entity = new TagEntry(tag, arrayOfTexts,offSetListForTag);
-				entityObjectMap.put("T" + Integer.toString(entityCount), entity);
-				entityCount++;
+			if (tag != null){
+				// text for tag
+				arrayOfTexts = new String[]{currentToken};
+
+				for (int[] offest : offSetList){
+					List<int[]> offSetListForTag = new ArrayList<>();
+					offSetListForTag.add(offest);
+					TagEntry entity = new TagEntry(tag, arrayOfTexts,offSetListForTag);
+					entityObjectMap.put("T" + Integer.toString(entityCount), entity);
+					entityCount++;
+				}
 			}
-
-
 		}
 
 		System.out.println("Words : "+tokenizedWords.size());
@@ -153,7 +154,7 @@ public class AnnotationService {
 	public String tagNamedEntities(String text){
 
 		// clean and set fixed texts
-		cleanText(text);
+	//	cleanText(text);
 		// generate the NE tags
 		generateEntities();
 		// convert to json and return
