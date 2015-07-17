@@ -38,5 +38,5 @@
     </jaxrs:providers>
   </jaxrs:server>
 
-  <bean id="gazetteerServiceEndpoint" class="org.uom.raavana.ananya.service.endpoints.gazetteer.GazetteerService"/>
+  <bean id="gazetteerServiceEndpoint" class="org.uom.raavana.ananya.service.endpoints.gazetteer.GazetteerServiceEndpoint"/>
 </beans>

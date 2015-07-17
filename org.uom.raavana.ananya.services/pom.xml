@@ -105,6 +105,12 @@
 
     <repositories>
 
+            <repository>
+                <id>LocalRepo</id>
+                <name>LocaL Repo for Sinmin Dependencies</name>
+                <url>file://${project.parent.basedir}/lib</url>
+            </repository>
+
         <repository>
             <id>wso2-nexus</id>
             <name>WSO2 internal Repository</name>

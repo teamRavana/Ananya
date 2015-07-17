@@ -25,4 +25,13 @@
             <version>2.6</version>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>LocalRepo</id>
+            <name>LocaL Repo for Sinmin Dependencies</name>
+            <url>file://${project.parent.basedir}/lib</url>
+        </repository>
+    </repositories>
+
 </project>

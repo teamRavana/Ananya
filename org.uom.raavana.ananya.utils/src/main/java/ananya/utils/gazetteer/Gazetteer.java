@@ -50,6 +50,7 @@ public class Gazetteer {
                 }
             }
         }
+
         instance.init(rootDirPath);
         return instance;
     }
@@ -63,14 +64,9 @@ public class Gazetteer {
 
         if (!rootDir.exists()){
             System.err.println("Root Gazetteer Directory does not exist : "+rootDirPath);
-            System.out.println("Changing Root Dir to Default : " + DEFAULT_INPUT_PATH);
-            rootDir = new File(DEFAULT_INPUT_PATH);
-        }
-
-        if (!rootDir.exists()) {
-            System.err.println("Default Root Gazetteer Directory does not exist");
             throw new RuntimeException("Unable to find the gazetteer root directory " + rootDir.getAbsolutePath());
         }
+
 
         for (File gazetteer : rootDir.listFiles()) {
             // for now we only deal with files placed in the root directory and do not go into sub directories
@@ -89,7 +85,7 @@ public class Gazetteer {
      */
     public String findNamedEntityTag(String word) {
 
-        String tag = NE_OTHER;
+        String tag = null;
         String fixedText = vowelFixer.fixText(word,true);
 
         if (personNamesMap.containsKey(fixedText)){
@@ -129,6 +125,7 @@ public class Gazetteer {
                 }
             }
 
+            System.out.println(file.getName() +"  processed");
 
         } catch (FileNotFoundException e) {
             System.err.println("Exception When trying to process " + file.getName() + " : " + e.getMessage());
