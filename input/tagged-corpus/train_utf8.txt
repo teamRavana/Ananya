@@ -77510,7 +77510,4 @@ governance	O
 ෆ්රෑන්ක්	B-NE 
 ගාඩනර්	I-NE 
 ය	O 
-.	O 
-
-
-
+.	O
