@@ -18,7 +18,7 @@ import java.io.File;
 @Path(value = "/gazetteer")
 public class GazetteerServiceEndpoint {
 
-    public static final String GAZETTEER_ROOT = "gazetteer.root";
+    public static final String GAZETTEER_ROOT = "GZ_ROOT";
     public static final String DEFAULT_APP_ROOT = ".ananya/input/gazetteer";
 
     @POST
@@ -30,13 +30,15 @@ public class GazetteerServiceEndpoint {
 
         String gazetteerPath = System.getenv(GAZETTEER_ROOT);
 
+
         if (gazetteerPath == null || StringUtils.isEmpty(gazetteerPath)){
             System.err.println("Environment Varible " + GAZETTEER_ROOT + " not set");
 
             gazetteerPath = System.getProperty("user.home")+ File.separator+DEFAULT_APP_ROOT;
-            System.err.println("Setting default gazetteer input directory : "+DEFAULT_APP_ROOT);
+            System.err.println("Setting default gazetteer input directory : "+gazetteerPath);
         }
 
+        System.out.println("Gazetteer Path : "+gazetteerPath);
         String response;
 
         try {
