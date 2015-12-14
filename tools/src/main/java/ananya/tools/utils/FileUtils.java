@@ -30,38 +30,30 @@ public class FileUtils {
 
 
     public static void mergeFiles(File[] files, File mergedFile) {
-        FileWriter fstream = null;
-        BufferedWriter out = null;
+        FileWriter fileWriter;
+        BufferedWriter bufferedWriter = null;
+
         try {
-            fstream = new FileWriter(mergedFile, true);
-            out = new BufferedWriter(fstream);
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
+            fileWriter = new FileWriter(mergedFile, true);
+            bufferedWriter = new BufferedWriter(fileWriter);
 
-        for (File f : files) {
-            System.out.println("merging: " + f.getName());
-            FileInputStream fis;
-            try {
-                fis = new FileInputStream(f);
-                BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+            for (File file : files) {
 
-                String aLine;
-                while ((aLine = in.readLine()) != null) {
-                    out.write(aLine);
-                    out.newLine();
+                FileInputStream fileInputStream = new FileInputStream(file);
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInputStream));
+
+                String line;
+                while( (line = bufferedReader.readLine()) != null) {
+                    bufferedWriter.write(line);
+                    bufferedWriter.newLine();
                 }
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                bufferedReader.close();
             }
+            bufferedWriter.close();
+        } catch (IOException ex) {
+            System.err.println("IO Exception : "+ex.getMessage());
         }
 
-        try {
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static int countLines(File aFile) throws IOException {
