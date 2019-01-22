@@ -1,15 +1,20 @@
 package org.uom.raavana.ananya.service.endpoints;
 
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import ananya.utils.gazetteer.Gazetteer;
+import ananya.tools.gazetteer.Gazetteer;
 import com.google.gson.Gson;
-
 import com.google.gson.GsonBuilder;
 import corpus.sinhala.SinhalaTokenizer;
 import corpus.sinhala.SinhalaVowelLetterFixer;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class AnnotationService {
